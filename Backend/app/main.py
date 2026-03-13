@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from models.user import UserCreate, UserLogin
 from models.schema import User
 from database.database import engine, SessionLocal, Base
@@ -6,6 +7,18 @@ from fastapi import Depends, HTTPException
 from auth.token import create_jwt, verify_jwt
 
 app = FastAPI()
+
+# ── CORS Middleware ──────────────────────────────────────────────
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ── Database Tables ─────────────────────────────────────────────
+Base.metadata.create_all(bind=engine)
 
 def get_db():
     db = SessionLocal()
@@ -53,6 +66,3 @@ def login(user: UserLogin, db: SessionLocal = Depends(get_db)):
 @app.get("/verifylogin")
 def verify_login(payload = Depends(verify_jwt)):
     return {"message": "Token is valid", "payload": payload}
-
-    
-

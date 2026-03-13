@@ -37,3 +37,8 @@ Thumbs.db
 
 # Migrations (optional - if using Alembic you may remove this)
 # migrations/
+
+# Node.js / Frontend
+node_modules/
+dist/
+.vite/

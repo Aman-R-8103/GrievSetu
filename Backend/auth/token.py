@@ -6,8 +6,8 @@ from datetime import datetime, timedelta, timezone
 
 load_dotenv()
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
+SECRET_KEY = os.getenv("SECRET_KEY", "grievsetu_secret_key_2024_secure")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
 
 def create_jwt(name: str):
     expire = datetime.now(timezone.utc) + timedelta(minutes=30)
@@ -31,4 +31,3 @@ def verify_jwt(Authorization: str = Header(None)):
         raise HTTPException(status_code = 401, detail = "Token has expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code = 401, detail = "Invalid token")
-
